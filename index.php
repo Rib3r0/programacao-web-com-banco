@@ -114,42 +114,48 @@ $resultado = $conexao->query($sql);
                 <p class="section-subtitle">Conheça alguns dos podcasts que estão fazendo sucesso na nossa comunidade
                 </p>
             </div>
-
             <div class="podcasts-grid">
                 <?php while($row = $resultado->fetch_assoc()): ?>
                 <article class="podcast-card">
                     <div class="podcast-header">
-                        <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                        <img src=<?= $row['imagem']?>
                             class="podcast-image">
-                        <span class="podcast-category category-tech">Tecnologia</span>
+                        <span class="podcast-category category-tech"><?= $row['categoria']?></span>
                         <span class="podcast-badge badge-trending">Em Alta</span>
                     </div>
                     <div class="podcast-content">
-                        <h3 class="podcast-title">Tech Talks: O Futuro da IA</h3>
+                        <h3 class="podcast-title"><?= $row['titulo']?></h3>
                         <p class="podcast-host">
                             <i class="fi fi-sr-user"></i>
-                            Por Carlos Silva
+                            Por <?= $row['autor']?>
                         </p>
                         <p class="podcast-description">
-                            Discussões profundas sobre inteligência artificial, machine learning e como essas
-                            tecnologias estão moldando nosso futuro. Episódio especial com CEOs do Vale do Silício.
+                            <?= $row['descricao']?>
                         </p>
                         <div class="podcast-stats">
                             <div class="stat">
                                 <i class="fi fi-sr-play"></i>
-                                <span>15K plays</span>
+                                <span><?php
+                                    if ($row['plays'] < 1000) {
+                                        echo $row['plays'] . ' plays';
+                                    } elseif ($row['plays'] < 1000000) {
+                                        echo number_format($row['plays'] / 1000, 1) . 'K plays';
+                                    } else {
+                                        echo number_format($row['plays'] / 1000000, 1) . 'M plays';
+                                    }
+                                ?></span>
                             </div>
                             <div class="stat">
                                 <i class="fi fi-sr-clock"></i>
-                                <span>45 min</span>
+                                <span><?= $row['duracao']?> min</span>
                             </div>
                             <div class="stat">
                                 <i class="fi fi-sr-star"></i>
-                                <span>4.8</span>
+                                <span><?= $row['avaliacao']?></span>
                             </div>
                         </div>
                         <div class="podcast-actions">
-                            <a href="./views/player.php" class="btn btn-secondary">
+                            <a href="./views/player.php?id=<?= $row['id']?>" class="btn btn-secondary">
                                 <i class="fi fi-sr-play"></i>
                                 Ouvir Agora
                             </a>
@@ -162,7 +168,7 @@ $resultado = $conexao->query($sql);
                 <?php endwhile; ?>
             </div>
             <div class="section-actions">
-                <a href="#explorar" class="btn btn-secondary">Ver todos os podcasts</a>
+                <a href="./views/podcasts.php" class="btn btn-secondary">Ver todos os podcasts</a>
             </div>
 
         </section>
